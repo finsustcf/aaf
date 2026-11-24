@@ -3,108 +3,290 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>金融友善通行證｜服務流程圖</title>
+<title>金融友善通行證｜服務作業流程</title>
 <style>
-  @page { size: A4 landscape; margin: 12mm; }
-  body { font-family: 'Noto Sans TC', -apple-system, "Segoe UI", Roboto, sans-serif; color: #0f172a; margin: 0; background: #f8fafc; line-height: 1.6; }
-  .wrap { max-width: 1100px; margin: 0 auto; padding: 24px; }
-  h1 { font-size: 1.5rem; margin: 0 0 4px; }
-  h2 { font-size: 1.1rem; margin: 22px 0 8px; }
-  .muted { color: #475569; font-size: .9rem; }
-  .card { background: #fff; border: 1px solid #cbd5e1; border-radius: 12px; padding: 16px; margin-top: 10px; overflow-x: auto; }
-  .note { background: #fffbeb; border: 1px solid #fcd34d; color: #78350f; border-radius: 8px; padding: 8px 12px; font-size: .9rem; }
-  table { width: 100%; border-collapse: collapse; font-size: .92rem; }
-  th, td { border: 1px solid #cbd5e1; padding: 6px 8px; text-align: left; vertical-align: top; }
-  th { background: #f1f5f9; }
-  .mermaid { text-align: center; }
-  @media print { .wrap { padding: 0; } .card { break-inside: avoid; } }
+  @page { size: A4 landscape; margin: 10mm; }
+  * { box-sizing: border-box; }
+  body { margin: 0; font-family: 'Noto Sans TC', 'PingFang TC', 'Microsoft JhengHei', -apple-system, "Segoe UI", sans-serif; color: #0f172a; background: #ffffff; line-height: 1.55; }
+  .page { width: 277mm; min-height: 190mm; margin: 0 auto; padding: 4mm 0; }
+  .page + .page { page-break-before: always; }
+  h1 { font-size: 20px; margin: 0 0 4px; color: #1e3a8a; }
+  h2 { font-size: 15px; margin: 0 0 8px; color: #1e3a8a; border-left: 4px solid #1e3a8a; padding-left: 8px; }
+  .meta { font-size: 12px; color: #334155; margin-bottom: 8px; }
+  .legend { display: flex; flex-wrap: wrap; gap: 14px; font-size: 12px; margin: 6px 0 8px; align-items: center; }
+  .lg { display: inline-flex; align-items: center; gap: 6px; }
+  .lg i { display: inline-block; width: 26px; height: 14px; border: 1.5px solid #1e3a8a; border-radius: 3px; background: #fff; }
+  .lg i.dia { border-radius: 0; transform: rotate(0deg); clip-path: polygon(50% 0, 100% 50%, 50% 100%, 0 50%); width: 22px; height: 16px; border: none; background: #475569; }
+  .lg i.err { border-color: #c2410c; background: #fff7ed; border-width: 2px; }
+  .lg i.line { height: 0; border: none; border-top: 1.5px solid #334155; width: 28px; }
+  .lg i.dash { height: 0; border: none; border-top: 1.5px dashed #c2410c; width: 28px; }
+
+  .stage { position: relative; width: 1040px; height: 568px; margin: 0 auto; }
+  .grid { position: absolute; inset: 0; display: grid; grid-template-columns: 110px repeat(5, 186px); grid-template-rows: 40px repeat(3, 176px); }
+  .grid > div { border: 1px solid #94a3b8; }
+  .corner { background: #1e3a8a; color: #fff; font-size: 12px; font-weight: 700; display: flex; align-items: center; justify-content: center; }
+  .phase { background: #e2e8f0; color: #0f172a; font-size: 13px; font-weight: 700; display: flex; align-items: center; justify-content: center; text-align: center; padding: 0 6px; }
+  .lane-label { background: #1e3a8a; color: #fff; font-size: 14px; font-weight: 700; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 6px; }
+  .lane-label small { font-size: 11px; font-weight: 400; margin-top: 4px; line-height: 1.4; }
+  .cust { background: #f5f9ff; }
+  .plat { background: #f3fbf9; }
+  .bank { background: #fbf6fd; }
+  .overlay { position: absolute; left: 0; top: 0; pointer-events: none; }
+  .overlay .proc { fill: #ffffff; stroke: #1e3a8a; stroke-width: 1.5; }
+  .overlay .dec { fill: #ffffff; stroke: #334155; stroke-width: 1.6; }
+  .overlay .err { fill: #fff7ed; stroke: #c2410c; stroke-width: 2; }
+  .overlay .wire { stroke: #334155; stroke-width: 1.5; fill: none; }
+  .overlay .wire-x { stroke: #c2410c; stroke-width: 1.5; fill: none; stroke-dasharray: 5 3; }
+  .overlay .t { font-size: 12px; fill: #0f172a; text-anchor: middle; }
+  .overlay .lb { font-size: 11px; fill: #334155; }
+  .overlay .lbx { font-size: 11px; fill: #9a3412; }
+
+  table { width: 100%; border-collapse: collapse; font-size: 12px; margin-bottom: 14px; }
+  th, td { border: 1px solid #94a3b8; padding: 5px 7px; text-align: left; vertical-align: top; }
+  th { background: #1e3a8a; color: #fff; font-weight: 700; }
+  tbody tr:nth-child(even) { background: #f8fafc; }
+  .sec-note { font-size: 12px; color: #334155; margin: 0 0 8px; }
+  .tag { display: inline-block; font-size: 11px; font-weight: 700; padding: 1px 6px; border-radius: 4px; background: #e2e8f0; color: #0f172a; }
+  .tag.err { background: #ffedd5; color: #9a3412; }
 </style>
 </head>
 <body>
-<div class="wrap">
 
-  <h1>金融友善通行證｜服務流程圖</h1>
-  <p class="muted">讀法：實線為主流程，由上往下依序進行；虛線為例外情況。配對碼已移除，平台直接傳送請求給銀行。</p>
-  <div class="note">本圖尚未對照台灣現行法規，僅為流程說明，不作為合規結論。</div>
+<!-- 第一頁：流程圖 -->
+<section class="page">
+  <h1>金融友善通行證｜服務作業流程</h1>
+  <div class="meta">適用對象：參與銀行 A–J（B 為純網銀，無實體分行）｜跨行識別：Open API，以 OAuth 授權導轉至各行｜文件用途：參與銀行主管呈核與跨部門會議｜版本 v1.0｜2026 年 11 月 24 日</div>
 
-  <h2>一、主流程（實線）</h2>
-  <div class="card">
-    <pre class="mermaid">
-flowchart TB
-  S1["① 客戶登入，選擇需要的協助"]
-  S2["② 客戶指定接收銀行，勾選同意，送出"]
-  S3["③ 平台為每家銀行各建立一筆請求"]
-  S4["④ 平台傳送給該銀行（只含該行的需求）"]
-  S5["⑤ 銀行收到請求，依本行流程確認客戶身分"]
-  S6["⑥ 身分確認通過，銀行查看需求並回覆"]
-  S7["⑦ 平台把回覆同步到客戶的「我的紀錄」"]
-
-  S1 --> S2 --> S3 --> S4 --> S5 --> S6 --> S7
-
-  S5 -. "未通過" .-> E1
-  S4 -. "銀行未介接" .-> E2
-  S7 -. "客戶撤回" .-> E3
-
-  E1["例外 A：銀行停止處理，依本行流程辦理；平台只顯示「未通過」"]
-  E2["例外 B：平台保留請求、不傳送；客戶看到「尚未送達」"]
-  E3["例外 C：平台停止該行查閱並通知銀行；已安排的服務由客戶直接與該行聯繫"]
-
-  style S1 fill:#eff6ff,stroke:#1e3a8a
-  style S2 fill:#eff6ff,stroke:#1e3a8a
-  style S3 fill:#f0fdfa,stroke:#0f766e
-  style S4 fill:#f0fdfa,stroke:#0f766e
-  style S5 fill:#fdf4ff,stroke:#86198f
-  style S6 fill:#fdf4ff,stroke:#86198f
-  style S7 fill:#f0fdfa,stroke:#0f766e
-  style E1 fill:#fff7ed,stroke:#c2410c
-  style E2 fill:#fff7ed,stroke:#c2410c
-  style E3 fill:#fff7ed,stroke:#c2410c
-    </pre>
+  <div class="legend">
+    <span class="lg"><i></i>作業步驟（矩形）</span>
+    <span class="lg"><i class="dia"></i>檢核判斷（菱形）</span>
+    <span class="lg"><i class="err"></i>異常中止（橘色框）</span>
+    <span class="lg"><i class="line"></i>正常傳遞</span>
+    <span class="lg"><i class="dash"></i>異常分支</span>
   </div>
 
-  <h2>二、步驟對照</h2>
-  <div class="card">
-    <table>
-      <thead><tr><th style="width:8%">步驟</th><th style="width:14%">負責方</th><th>做什麼</th><th style="width:30%">傳遞的資料</th></tr></thead>
-      <tbody>
-        <tr><td>①</td><td>客戶</td><td>登入，選擇需要的協助項目</td><td>協助項目</td></tr>
-        <tr><td>②</td><td>客戶</td><td>指定接收銀行，勾選同意後送出</td><td>接收銀行、同意紀錄</td></tr>
-        <tr><td>③</td><td>平台</td><td>每家被指定的銀行各建立一筆請求</td><td>每筆只含該行的需求</td></tr>
-        <tr><td>④</td><td>平台 → 銀行</td><td>傳送請求</td><td>該行的需求、案件編號</td></tr>
-        <tr><td>⑤</td><td>銀行</td><td>收件後依本行流程確認身分</td><td>銀行內部資料</td></tr>
-        <tr><td>⑥</td><td>銀行</td><td>身分通過後查看需求並回覆</td><td>回覆內容</td></tr>
-        <tr><td>⑦</td><td>平台</td><td>回覆同步到客戶紀錄</td><td>回覆與狀態</td></tr>
-      </tbody>
-    </table>
+  <div class="stage">
+    <div class="grid">
+      <div class="corner">作業階段 ／ 角色</div>
+      <div class="phase">一、需求授權</div>
+      <div class="phase">二、派送與導轉</div>
+      <div class="phase">三、身分驗證與授權</div>
+      <div class="phase">四、接件、服務安排與回覆</div>
+      <div class="phase">五、單獨撤回</div>
+
+      <div class="lane-label">客戶<small>本人操作</small></div>
+      <div class="cust"></div><div class="cust"></div><div class="cust"></div><div class="cust"></div><div class="cust"></div>
+
+      <div class="lane-label">共同平台<small>金融友善通行證</small></div>
+      <div class="plat"></div><div class="plat"></div><div class="plat"></div><div class="plat"></div><div class="plat"></div>
+
+      <div class="lane-label">接收銀行<small>A–J（B 為純網銀）</small></div>
+      <div class="bank"></div><div class="bank"></div><div class="bank"></div><div class="bank"></div><div class="bank"></div>
+    </div>
+
+    <svg class="overlay" width="1040" height="568" viewBox="0 0 1040 568" aria-label="服務作業流程圖">
+      <defs>
+        <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+          <path d="M0,0 L10,5 L0,10 z" fill="#334155"/>
+        </marker>
+        <marker id="arw" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+          <path d="M0,0 L10,5 L0,10 z" fill="#c2410c"/>
+        </marker>
+      </defs>
+
+      <!-- 客戶泳道 -->
+      <rect class="proc" x="128" y="56" width="150" height="56" rx="8"/>
+      <text class="t" x="203" y="81">① 登入帳號</text>
+      <text class="t" x="203" y="96">勾選需要的協助</text>
+
+      <rect class="proc" x="128" y="144" width="150" height="56" rx="8"/>
+      <text class="t" x="203" y="169">② 指定接收銀行</text>
+      <text class="t" x="203" y="184">並勾選同意</text>
+
+      <rect class="proc" x="314" y="100" width="150" height="56" rx="8"/>
+      <text class="t" x="389" y="125">⑤ 客戶被導轉至</text>
+      <text class="t" x="389" y="140">該行 OAuth 授權頁</text>
+
+      <rect class="proc" x="686" y="100" width="150" height="56" rx="8"/>
+      <text class="t" x="761" y="125">⑪ 客戶查看各行</text>
+      <text class="t" x="761" y="140">狀態與回覆</text>
+
+      <rect class="proc" x="872" y="100" width="150" height="56" rx="8"/>
+      <text class="t" x="947" y="125">⑫ 選擇單一銀行</text>
+      <text class="t" x="947" y="140">發出撤回</text>
+
+      <!-- 平台泳道 -->
+      <rect class="proc" x="128" y="252" width="150" height="56" rx="8"/>
+      <text class="t" x="203" y="268">③ 為每家銀行建立</text>
+      <text class="t" x="203" y="283">授權範圍（案件編號＋</text>
+      <text class="t" x="203" y="298">需求代碼）</text>
+
+      <polygon class="dec" points="389,244 474,280 389,316 304,280"/>
+      <text class="t" x="389" y="284">④ 該行已介接？</text>
+
+      <rect class="proc" x="500" y="276" width="150" height="56" rx="8"/>
+      <text class="t" x="575" y="301">⑦ 以授權碼換取</text>
+      <text class="t" x="575" y="316">存取權杖，留存紀錄</text>
+
+      <rect class="proc" x="686" y="276" width="150" height="56" rx="8"/>
+      <text class="t" x="761" y="301">⑩ 回覆同步至</text>
+      <text class="t" x="761" y="316">客戶紀錄</text>
+
+      <rect class="proc" x="872" y="276" width="150" height="56" rx="8"/>
+      <text class="t" x="947" y="301">⑬ 停止該行查閱</text>
+      <text class="t" x="947" y="316">並發出撤回通知</text>
+
+      <rect class="err" x="314" y="334" width="150" height="56" rx="8"/>
+      <text class="t" x="389" y="359">4a 未介接，不導轉</text>
+      <text class="t" x="389" y="374">紀錄顯示尚未開放</text>
+
+      <!-- 銀行泳道 -->
+      <polygon class="dec" points="575,404 660,440 575,476 490,440"/>
+      <text class="t" x="575" y="436">⑥ 身分驗證</text>
+      <text class="t" x="575" y="452">通過？</text>
+
+      <rect class="err" x="500" y="502" width="150" height="56" rx="8"/>
+      <text class="t" x="575" y="527">6a 驗證未通過：授權中止</text>
+      <text class="t" x="575" y="542">客戶可重新導轉</text>
+
+      <rect class="proc" x="686" y="404" width="150" height="56" rx="8"/>
+      <text class="t" x="761" y="429">⑧ 銀行接件</text>
+      <text class="t" x="761" y="444">列入本行收件清單</text>
+
+      <rect class="proc" x="686" y="500" width="150" height="56" rx="8"/>
+      <text class="t" x="761" y="525">⑨ 依需求安排服務</text>
+      <text class="t" x="761" y="540">並回覆客戶</text>
+
+      <rect class="proc" x="872" y="452" width="150" height="56" rx="8"/>
+      <text class="t" x="947" y="477">⑭ 銀行停止查閱</text>
+      <text class="t" x="947" y="492">本筆需求</text>
+
+      <!-- 連線（正常） -->
+      <path class="wire" d="M203,112 V144" marker-end="url(#ar)"/>
+      <path class="wire" d="M203,200 V252" marker-end="url(#ar)"/>
+      <path class="wire" d="M278,280 H304" marker-end="url(#ar)"/>
+      <path class="wire" d="M389,244 V156" marker-end="url(#ar)"/>
+      <path class="wire" d="M464,128 H480 V440 H490" marker-end="url(#ar)"/>
+      <path class="wire" d="M575,404 V332" marker-end="url(#ar)"/>
+      <path class="wire" d="M650,304 H668 V432 H686" marker-end="url(#ar)"/>
+      <path class="wire" d="M761,460 V500" marker-end="url(#ar)"/>
+      <path class="wire" d="M836,528 H854 V304 H836" marker-end="url(#ar)"/>
+      <path class="wire" d="M761,276 V156" marker-end="url(#ar)"/>
+      <path class="wire" d="M836,128 H872" marker-end="url(#ar)"/>
+      <path class="wire" d="M947,156 V276" marker-end="url(#ar)"/>
+      <path class="wire" d="M947,332 V452" marker-end="url(#ar)"/>
+
+      <!-- 連線（異常） -->
+      <path class="wire-x" d="M389,316 V334" marker-end="url(#arw)"/>
+      <path class="wire-x" d="M575,476 V502" marker-end="url(#arw)"/>
+
+      <!-- 連線標示 -->
+      <text class="lb" x="212" y="131">需求代碼清單</text>
+      <text class="lb" x="212" y="229">接收銀行＋同意紀錄</text>
+      <text class="lb" x="397" y="207">是</text>
+      <text class="lbx" x="397" y="331">否</text>
+      <text class="lb" x="488" y="234">客戶導轉至本行授權頁</text>
+      <text class="lb" x="583" y="362">授權碼導回</text>
+      <text class="lbx" x="583" y="494">否</text>
+      <text class="lb" x="674" y="392">授權範圍內需求＋案件編號</text>
+      <text class="lb" x="770" y="484">收件後安排服務</text>
+      <text class="lb" x="862" y="420">回覆內容與狀態</text>
+      <text class="lb" x="770" y="222">回覆與狀態</text>
+      <text class="lb" x="955" y="222">撤回指令</text>
+      <text class="lb" x="955" y="396">撤回通知</text>
+    </svg>
   </div>
+</section>
 
-  <h2>三、例外情況</h2>
-  <div class="card">
-    <table>
-      <thead><tr><th style="width:18%">情況</th><th style="width:12%">出現在</th><th>結果與責任</th></tr></thead>
-      <tbody>
-        <tr><td>A．身分未通過</td><td>⑤</td><td>銀行停止，依本行流程處理。客戶紀錄只顯示「未通過」，不顯示需求內容。</td></tr>
-        <tr><td>B．銀行未介接</td><td>④</td><td>平台不傳送，保留請求。客戶看到「尚未送達」，之後由平台與銀行另行處理。</td></tr>
-        <tr><td>C．客戶撤回</td><td>⑦之後</td><td>平台停止該行查閱並通知銀行。其他銀行不受影響。已安排的服務由客戶直接與該行聯繫。</td></tr>
-      </tbody>
-    </table>
-  </div>
+<!-- 第二頁：作業步驟與資料交換清單 -->
+<section class="page">
+  <h2>附表一　作業步驟與資料交換清單</h2>
+  <p class="sec-note">編號對應第一頁流程圖。「系統自動」指平台或銀行系統依規則執行，「人工」指由客戶或銀行人員操作。</p>
+  <table>
+    <thead>
+      <tr><th style="width:6%">編號</th><th style="width:12%">階段</th><th style="width:12%">執行角色</th><th style="width:11%">作業方式</th><th style="width:31%">傳遞欄位</th><th>保存範圍</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>①</td><td>一、需求授權</td><td>客戶</td><td><span class="tag">人工</span></td><td>協助需求代碼清單</td><td>客戶紀錄（需求代碼、操作時間）</td></tr>
+      <tr><td>②</td><td>一、需求授權</td><td>客戶</td><td><span class="tag">人工</span></td><td>接收銀行代碼清單、同意版本與時間</td><td>同意紀錄，依個資保存規定辦理</td></tr>
+      <tr><td>③</td><td>一、需求授權</td><td>平台</td><td><span class="tag">系統自動</span></td><td>案件編號、每家銀行的授權範圍（僅含該行的需求代碼）</td><td>平台案件資料；各行資料互不相通</td></tr>
+      <tr><td>④</td><td>二、派送與導轉</td><td>平台</td><td><span class="tag">系統自動</span></td><td>該行介接狀態（是否已完成 Open API 介接）</td><td>平台介接狀態表</td></tr>
+      <tr><td>4a</td><td>二、派送與導轉</td><td>平台</td><td><span class="tag err">系統自動</span></td><td>狀態：尚未開放</td><td>客戶紀錄（僅狀態，不產生授權請求）</td></tr>
+      <tr><td>⑤</td><td>二、派送與導轉</td><td>平台、客戶瀏覽器、銀行</td><td><span class="tag">系統導轉＋客戶操作</span></td><td>導轉參數：平台識別碼、授權範圍（需求代碼）、state（防偽參數）、回傳位址</td><td>導轉紀錄；state 使用後失效</td></tr>
+      <tr><td>⑥</td><td>三、身分驗證與授權</td><td>銀行</td><td><span class="tag">人工（客戶於銀行頁完成）</span></td><td>銀行自有驗證資料，不回傳平台</td><td>依銀行本身規定保存</td></tr>
+      <tr><td>6a</td><td>三、身分驗證與授權</td><td>銀行</td><td><span class="tag err">系統自動</span></td><td>驗證失敗代碼（不含個人資料內容）</td><td>平台僅記錄「未完成授權」狀態</td></tr>
+      <tr><td>⑦</td><td>三、身分驗證與授權</td><td>銀行、客戶瀏覽器、平台</td><td><span class="tag">系統自動</span></td><td>一次性授權碼、state；平台以授權碼換取存取權杖（綁定授權範圍與期限）</td><td>授權碼用後即失效；權杖存放於平台憑證庫，到期或撤回即失效</td></tr>
+      <tr><td>⑧</td><td>四、接件、服務安排與回覆</td><td>銀行</td><td><span class="tag">系統自動</span></td><td>銀行以存取權杖呼叫平台 API，取得授權範圍內的案件編號與需求代碼</td><td>銀行收件紀錄；權杖之外的資料不可取得</td></tr>
+      <tr><td>⑨</td><td>四、接件、服務安排與回覆</td><td>銀行</td><td><span class="tag">人工</span></td><td>服務安排內容、回覆代碼、補充說明（300 字以內）</td><td>依銀行本身規定保存</td></tr>
+      <tr><td>⑩</td><td>四、接件、服務安排與回覆</td><td>銀行、平台</td><td><span class="tag">系統自動</span></td><td>回覆代碼、補充說明、回覆時間、狀態</td><td>平台客戶紀錄（回覆內容）</td></tr>
+      <tr><td>⑪</td><td>四、接件、服務安排與回覆</td><td>客戶</td><td><span class="tag">人工</span></td><td>無（僅查閱）</td><td>—</td></tr>
+      <tr><td>⑫</td><td>五、單獨撤回</td><td>客戶</td><td><span class="tag">人工</span></td><td>撤回指令（案件編號、銀行代碼）</td><td>撤回紀錄</td></tr>
+      <tr><td>⑬</td><td>五、單獨撤回</td><td>平台</td><td><span class="tag">系統自動</span></td><td>撤銷該行存取權杖；撤回通知</td><td>撤回紀錄</td></tr>
+      <tr><td>⑭</td><td>五、單獨撤回</td><td>銀行</td><td><span class="tag">系統自動</span></td><td>權杖失效通知；停止查閱</td><td>銀行依規定保存已收資料</td></tr>
+    </tbody>
+  </table>
+</section>
 
-  <h2>四、需要確認的事項</h2>
-  <div class="card">
-    <ol>
-      <li>平台與銀行之間的安全傳送方式，由誰訂定規格。</li>
-      <li>身分確認的責任歸屬，是銀行自行負責，還是平台也要參與。</li>
-      <li>未通過與撤回後，平台保留資料的期限。</li>
-    </ol>
-  </div>
+<!-- 第三頁：異常情境與責任歸屬 -->
+<section class="page">
+  <h2>附表二　異常情境與責任歸屬</h2>
+  <p class="sec-note">停止點指流程在哪一步終止；接手單位指後續由誰處理。</p>
+  <table>
+    <thead>
+      <tr><th style="width:16%">情境</th><th style="width:10%">觸發步驟</th><th style="width:20%">流程停止點</th><th style="width:24%">接手單位</th><th>客戶可見結果</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>銀行未完成 Open API 介接</td><td>④ → 4a</td><td>平台。不產生導轉，不建立授權請求。</td><td>平台營運單位，與該行介接窗口協調。</td><td>紀錄顯示「尚未開放」，客戶可隨時再次嘗試。</td></tr>
+      <tr><td>身分驗證失敗，或客戶無法使用銀行 App</td><td>⑥ → 6a</td><td>銀行授權頁。授權中止，不回傳授權碼。</td><td>銀行，依本行替代驗證流程處理（如臨櫃、語音或其他已開放管道）。</td><td>紀錄顯示「未完成授權」，客戶可重新導轉。純網銀 B 無實體分行，以線上替代驗證為主。</td></tr>
+      <tr><td>授權資料不符（state 與平台記錄不一致，或權杖範圍與案件不符）</td><td>⑦</td><td>平台。拒收授權碼，不換取權杖。</td><td>平台資安與營運單位，留存異常紀錄並進行原因分析。</td><td>顯示「授權失敗，請重新操作」，不顯示任何需求內容。</td></tr>
+      <tr><td>銀行收件後發現資料與客戶不符</td><td>⑧</td><td>銀行。停止處理，不安排服務。</td><td>銀行，依本行流程處理，並通知平台撤銷該行權杖。</td><td>該行狀態顯示「已退回」，客戶可重新送出。</td></tr>
+      <tr><td>客戶單獨撤回某一家銀行</td><td>⑫ → ⑬ → ⑭</td><td>平台。立即撤銷該行權杖，停止查閱。</td><td>平台自動處理；已安排的服務由客戶直接與該行聯繫。</td><td>該行狀態顯示「已撤回」，其他銀行不受影響。</td></tr>
+    </tbody>
+  </table>
+</section>
 
-</div>
+<!-- 第四頁：台灣現行法規合規檢核表 -->
+<section class="page">
+  <h2>附表三　台灣現行法規合規檢核表</h2>
+  <p class="sec-note">左欄為法規要求，右欄為本案設計對策。對應步驟指該對策落實於第一頁流程圖的哪些編號。</p>
+  <table>
+    <thead>
+      <tr><th style="width:18%">法規</th><th style="width:34%">法規要求</th><th>本案設計對策</th><th style="width:12%">對應步驟</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>《個人資料保護法》</td>
+        <td>蒐集健康相關資料屬特種個資，蒐集須有特定目的，並履行告知與取得同意義務；利用不得逾越目的範圍；委託他人處理時，委託機關須為監督。</td>
+        <td>同意書明列目的（安排金融友善服務）、接收機構與保存期限。平台只傳遞授權範圍內的需求代碼，不傳遞身分證字號、病況描述或其他個人資料。平台與各行另簽資料傳遞與委外約定。</td>
+        <td>①、②、③、⑧</td>
+      </tr>
+      <tr>
+        <td>《金融機構間資料共享指引》</td>
+        <td>金融機構間共享客戶資料，應以客戶同意為前提，限定於明確用途，並建立內部控管與紀錄。</td>
+        <td>資料共享以客戶逐行授權為前提，授權範圍逐項列明。各行只取得自己的授權範圍，平台不做跨行資料彙整。</td>
+        <td>②、⑤、⑧</td>
+      </tr>
+      <tr>
+        <td>《電子銀行業務安全控管作業基準》</td>
+        <td>電子銀行服務應採取適當的身分驗證、資料傳輸加密，並保存必要的存取與交易紀錄。</td>
+        <td>身分驗證由銀行於其授權頁完成，平台不接觸客戶的驗證資料。授權碼一次性使用，權杖限定範圍與期限。傳輸採加密通道，存取紀錄完整留存。</td>
+        <td>⑥、⑦、⑧、⑩</td>
+      </tr>
+      <tr>
+        <td>《銀行業金融友善服務準則》</td>
+        <td>銀行應依客戶需求提供友善服務，並以客戶實際需求安排服務方式。</td>
+        <td>需求項目依準則的服務類別列出。各行逐項回覆安排方式，並可補充說明。客戶隨時可撤回單一銀行的分享。</td>
+        <td>①、⑨、⑫</td>
+      </tr>
+      <tr>
+        <td>財金公司開放銀行相關技術標準</td>
+        <td>介接應採用標準化 API 與 OAuth 授權流程，並符合資訊安全要求。</td>
+        <td>採 OAuth 授權導轉，搭配 state 防偽參數與存取權杖。權杖限縮授權範圍與期限，撤回時立即撤銷，並保留完整日誌。</td>
+        <td>④、⑤、⑦、⑧、⑬</td>
+      </tr>
+    </tbody>
+  </table>
+</section>
 
-<script type="module">
-  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
-  mermaid.initialize({ startOnLoad: true, securityLevel: 'loose', theme: 'base',
-    flowchart: { htmlLabels: true, curve: 'basis', nodeSpacing: 50, rankSpacing: 45 } });
-</script>
 </body>
 </html>
