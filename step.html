@@ -3,21 +3,21 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>金融友善通行證｜服務流程圖（草稿）</title>
+<title>金融友善通行證｜服務流程圖（草稿 v2）</title>
 <style>
   @page { size: A4 landscape; margin: 12mm; }
   body { font-family: 'Noto Sans TC', -apple-system, "Segoe UI", Roboto, sans-serif; color: #0f172a; margin: 0; background: #f8fafc; line-height: 1.6; }
-  .wrap { max-width: 1100px; margin: 0 auto; padding: 24px; }
+  .wrap { max-width: 1200px; margin: 0 auto; padding: 24px; }
   h1 { font-size: 1.5rem; margin: 0 0 4px; }
   h2 { font-size: 1.15rem; margin: 24px 0 8px; }
   .muted { color: #475569; font-size: .9rem; }
-  .card { background: #fff; border: 1px solid #cbd5e1; border-radius: 12px; padding: 16px; margin-top: 12px; }
+  .card { background: #fff; border: 1px solid #cbd5e1; border-radius: 12px; padding: 16px; margin-top: 12px; overflow-x: auto; }
   .draft { background: #fffbeb; border: 1px solid #fcd34d; color: #78350f; border-radius: 8px; padding: 8px 12px; font-size: .9rem; }
   table { width: 100%; border-collapse: collapse; font-size: .9rem; }
   th, td { border: 1px solid #cbd5e1; padding: 6px 8px; text-align: left; vertical-align: top; }
   th { background: #f1f5f9; }
-  .tag { display: inline-block; padding: 0 6px; border-radius: 4px; background: #e2e8f0; font-size: .8rem; }
-  .tag.todo { background: #fde68a; }
+  .tag { display: inline-block; padding: 0 6px; border-radius: 4px; background: #fde68a; font-size: .8rem; }
+  .mermaid { text-align: center; }
   @media print { .wrap { padding: 0; } .card { break-inside: avoid; } }
 </style>
 </head>
@@ -25,176 +25,122 @@
 <div class="wrap">
 
   <h1>金融友善通行證｜服務流程圖</h1>
-  <p class="muted">角色：客戶、共同平台、接收銀行。箭頭上標示傳遞的資料。配對碼流程已移除，改為平台直接傳送。</p>
-  <div class="draft">草稿。台灣法規尚未查核，第二頁的法規欄位皆為「待查核」，不可作為合規結論。</div>
+  <p class="muted">三個角色：客戶、共同平台、接收銀行。流程依步驟編號進行；每條箭頭標示傳遞的資料。配對碼已移除，改為平台直接傳送。</p>
+  <div class="draft">草稿。台灣法規尚未查核，表格中的法規欄位皆為「待查核」，不可作為合規結論。</div>
 
+  <h2>一、流程圖</h2>
   <div class="card">
-    <svg viewBox="0 0 1100 470" width="100%" role="img" aria-label="服務流程圖">
-      <defs>
-        <marker id="a" markerWidth="10" markerHeight="10" refX="9" refY="5" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#334155"/></marker>
-        <marker id="d" markerWidth="10" markerHeight="10" refX="9" refY="5" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#b45309"/></marker>
-      </defs>
+    <pre class="mermaid">
+flowchart TD
+  subgraph C["客戶"]
+    A1["[1] 登入並選擇協助需求"]
+    A2["[2] 指定接收銀行並勾選同意"]
+    A10["[10] 查看各行狀態與回覆"]
+    A11["[11] 撤回單一銀行的分享"]
+  end
 
-      <!-- 泳道 -->
-      <rect x="0" y="0" width="1100" height="150" fill="#eff6ff"/>
-      <rect x="0" y="150" width="1100" height="160" fill="#f0fdfa"/>
-      <rect x="0" y="310" width="1100" height="160" fill="#fdf4ff"/>
-      <text x="8" y="20" font-size="13" font-weight="700" fill="#1e3a8a">客戶</text>
-      <text x="8" y="170" font-size="13" font-weight="700" fill="#115e59">共同平台</text>
-      <text x="8" y="330" font-size="13" font-weight="700" fill="#86198f">接收銀行</text>
+  subgraph P["共同平台"]
+    P3["[3] 為每家被指定的銀行建立一筆請求"]
+    P4{"[4] 該行已完成介接？"}
+    P4a["[4a] 保留請求，不傳送"]
+    P4b["[4b] 透過安全管道傳送請求"]
+    P9["[9] 同步回覆與狀態至客戶紀錄"]
+    P12["[12] 停止該行查閱"]
+  end
 
-      <!-- 客戶 -->
-      <g>
-        <rect x="70" y="50" width="150" height="56" rx="8" fill="#fff" stroke="#1e3a8a"/>
-        <text x="145" y="74" text-anchor="middle" font-size="13">[1] 登入並選擇</text>
-        <text x="145" y="92" text-anchor="middle" font-size="13">協助需求</text>
+  subgraph B["接收銀行"]
+    B5["[5] 接收請求，列入收件匣"]
+    B6{"[6] 依本行流程確認身分？"}
+    B7["[7] 身分未通過或資料不符：停止，依本行流程處理"]
+    B8["[8] 身分通過後顯示需求並回覆"]
+    B12["[12b] 收到撤回通知，停止查閱"]
+  end
 
-        <rect x="290" y="50" width="150" height="56" rx="8" fill="#fff" stroke="#1e3a8a"/>
-        <text x="365" y="74" text-anchor="middle" font-size="13">[2] 選擇接收銀行</text>
-        <text x="365" y="92" text-anchor="middle" font-size="13">並同意分享</text>
+  A1 -->|"協助項目"| A2
+  A2 -->|"接收銀行清單＋同意紀錄"| P3
+  P3 -->|"每行各一筆"| P4
+  P4 -->|"否"| P4a
+  P4a -->|"通知客戶：尚未送達"| A10
+  P4 -->|"是"| P4b
+  P4b -->|"該行授權的需求＋案件編號"| B5
+  B5 --> B6
+  B6 -->|"否"| B7
+  B6 -->|"是"| B8
+  B7 -->|"僅回傳狀態：未通過"| P9
+  B8 -->|"回覆內容"| P9
+  P9 -->|"回覆與狀態"| A10
+  A10 --> A11
+  A11 -->|"撤回指令（指定銀行）"| P12
+  P12 -->|"撤回通知"| B12
 
-        <rect x="700" y="50" width="150" height="56" rx="8" fill="#fff" stroke="#1e3a8a"/>
-        <text x="775" y="74" text-anchor="middle" font-size="13">[10] 查看各行狀態</text>
-        <text x="775" y="92" text-anchor="middle" font-size="13">與回覆</text>
-
-        <rect x="900" y="50" width="150" height="56" rx="8" fill="#fff" stroke="#1e3a8a"/>
-        <text x="975" y="74" text-anchor="middle" font-size="13">[11] 撤回單一銀行</text>
-        <text x="975" y="92" text-anchor="middle" font-size="13">的分享</text>
-      </g>
-
-      <!-- 共同平台 -->
-      <g>
-        <rect x="520" y="200" width="150" height="56" rx="8" fill="#fff" stroke="#0f766e"/>
-        <text x="595" y="224" text-anchor="middle" font-size="13">[3] 為每家銀行建立</text>
-        <text x="595" y="242" text-anchor="middle" font-size="13">請求（僅授權需求）</text>
-
-        <rect x="290" y="200" width="150" height="56" rx="8" fill="#fff" stroke="#0f766e"/>
-        <text x="365" y="224" text-anchor="middle" font-size="13">[4] 安全管道傳送</text>
-        <text x="365" y="242" text-anchor="middle" font-size="13">（待介接規格）</text>
-
-        <rect x="70" y="200" width="150" height="56" rx="8" fill="#fff" stroke="#0f766e" stroke-dasharray="5 4"/>
-        <text x="145" y="224" text-anchor="middle" font-size="13">[4a] 銀行未介接</text>
-        <text x="145" y="242" text-anchor="middle" font-size="13">保留請求並通知客戶</text>
-
-        <rect x="700" y="200" width="150" height="56" rx="8" fill="#fff" stroke="#0f766e"/>
-        <text x="775" y="224" text-anchor="middle" font-size="13">[9] 同步回覆與狀態</text>
-        <text x="775" y="242" text-anchor="middle" font-size="13">至客戶紀錄</text>
-
-        <rect x="900" y="200" width="150" height="56" rx="8" fill="#fff" stroke="#0f766e"/>
-        <text x="975" y="224" text-anchor="middle" font-size="13">[12] 停止該行查閱</text>
-        <text x="975" y="242" text-anchor="middle" font-size="13">並通知該行</text>
-      </g>
-
-      <!-- 接收銀行 -->
-      <g>
-        <rect x="520" y="360" width="150" height="56" rx="8" fill="#fff" stroke="#86198f"/>
-        <text x="595" y="384" text-anchor="middle" font-size="13">[7] 身分未通過</text>
-        <text x="595" y="402" text-anchor="middle" font-size="13">停止，依本行流程處理</text>
-
-        <rect x="290" y="360" width="150" height="56" rx="8" fill="#fff" stroke="#86198f"/>
-        <text x="365" y="384" text-anchor="middle" font-size="13">[5] 接收請求</text>
-        <text x="365" y="402" text-anchor="middle" font-size="13">列入收件匣</text>
-
-        <polygon points="775,352 830,388 775,424 720,388" fill="#fff" stroke="#86198f"/>
-        <text x="775" y="384" text-anchor="middle" font-size="11">[6] 依本行流程</text>
-        <text x="775" y="400" text-anchor="middle" font-size="11">確認身分？</text>
-
-        <rect x="900" y="360" width="150" height="56" rx="8" fill="#fff" stroke="#86198f"/>
-        <text x="975" y="384" text-anchor="middle" font-size="13">[8] 顯示需求並回覆</text>
-        <text x="975" y="402" text-anchor="middle" font-size="13">（身分確認後）</text>
-      </g>
-
-      <!-- 箭頭 -->
-      <g stroke="#334155" stroke-width="1.6" fill="none" marker-end="url(#a)">
-        <line x1="220" y1="78" x2="290" y2="78"/>
-        <path d="M365,106 L365,170 L520,228"/>
-        <line x1="670" y1="228" x2="700" y2="228"/>
-        <line x1="595" y1="256" x2="595" y2="310"/>
-        <line x1="365" y1="228" x2="290" y2="228"/>
-        <line x1="290" y1="388" x2="220" y2="388" stroke="none"/>
-        <line x1="440" y1="388" x2="520" y2="388"/>
-        <line x1="440" y1="388" x2="720" y2="388" stroke="none"/>
-        <line x1="365" y1="256" x2="365" y2="360"/>
-        <line x1="440" y1="388" x2="720" y2="388"/>
-        <line x1="830" y1="388" x2="900" y2="388"/>
-        <path d="M975,360 L975,284" />
-        <path d="M900,228 L850,228 M775,200 L775,106"/>
-        <path d="M900,78 L850,78 L700,78" stroke="none"/>
-        <path d="M975,106 L975,200" stroke="#b45309" stroke-dasharray="6 4" marker-end="url(#d)"/>
-      </g>
-
-      <!-- 文字標註 -->
-      <g font-size="11" fill="#334155">
-        <text x="240" y="70">協助需求＋接收銀行</text>
-        <text x="300" y="300">授權需求＋案件編號</text>
-        <text x="600" y="300">每行一筆請求</text>
-        <text x="745" y="222">回覆與狀態</text>
-        <text x="860" y="380">是</text>
-        <text x="740" y="440">否</text>
-        <text x="980" y="300">撤回（客戶操作）</text>
-      </g>
-
-      <!-- 失敗與撤回分支（虛線） -->
-      <g stroke="#b45309" stroke-width="1.4" fill="none" stroke-dasharray="6 4" marker-end="url(#d)">
-        <path d="M145,106 L145,200"/>
-        <path d="M700,438 L595,416"/>
-        <path d="M775,424 L775,440 L595,440 L595,416" stroke="none"/>
-      </g>
-      <text x="750" y="455" font-size="11" fill="#78350f">否：銀行端停止，平台不再保留</text>
-    </svg>
+  classDef cust fill:#eff6ff,stroke:#1e3a8a,color:#0f172a
+  classDef plat fill:#f0fdfa,stroke:#0f766e,color:#0f172a
+  classDef bank fill:#fdf4ff,stroke:#86198f,color:#0f172a
+  class A1,A2,A10,A11 cust
+  class P3,P4,P4a,P4b,P9,P12 plat
+  class B5,B6,B7,B8,B12 bank
+    </pre>
   </div>
 
-  <h2>流程步驟說明</h2>
+  <h2>二、步驟說明</h2>
   <div class="card">
     <table>
-      <thead><tr><th style="width:6%">編號</th><th style="width:18%">角色</th><th>步驟</th><th style="width:30%">傳遞資料</th></tr></thead>
+      <thead><tr><th style="width:7%">編號</th><th style="width:13%">角色</th><th>動作</th><th style="width:28%">傳遞或保存的資料</th></tr></thead>
       <tbody>
-        <tr><td>1</td><td>客戶</td><td>登入並選擇需要的協助</td><td>—</td></tr>
-        <tr><td>2</td><td>客戶</td><td>指定接收銀行並勾選同意</td><td>協助項目、接收銀行清單</td></tr>
-        <tr><td>3</td><td>平台</td><td>為每家被指定的銀行建立請求</td><td>該行授權的需求項目、案件編號</td></tr>
-        <tr><td>4</td><td>平台→銀行</td><td>透過安全管道傳送請求（待介接規格）</td><td>同上，不含其他行資料</td></tr>
-        <tr><td>4a</td><td>平台</td><td>銀行尚未介接：保留請求，不傳送，通知客戶</td><td>客戶端狀態</td></tr>
-        <tr><td>5</td><td>銀行</td><td>接收請求，列入收件匣</td><td>無需求內容（僅狀態）</td></tr>
-        <tr><td>6</td><td>銀行</td><td>依本行身分確認流程確認客戶</td><td>銀行自有流程資料</td></tr>
-        <tr><td>7</td><td>銀行</td><td>身分未通過：停止，依本行流程處理</td><td>平台僅記錄狀態</td></tr>
-        <tr><td>8</td><td>銀行</td><td>身分確認後，顯示需求並回覆</td><td>服務安排說明</td></tr>
-        <tr><td>9</td><td>平台</td><td>同步回覆與狀態至客戶紀錄</td><td>回覆內容、狀態</td></tr>
+        <tr><td>1</td><td>客戶</td><td>登入並選擇需要的協助項目</td><td>協助項目</td></tr>
+        <tr><td>2</td><td>客戶</td><td>指定接收銀行並勾選同意</td><td>接收銀行清單、同意紀錄</td></tr>
+        <tr><td>3</td><td>平台</td><td>為每家被指定的銀行各建立一筆請求</td><td>每行的請求，互不包含其他行的資料</td></tr>
+        <tr><td>4</td><td>平台</td><td>判斷該銀行是否已完成介接</td><td>介接狀態</td></tr>
+        <tr><td>4a</td><td>平台</td><td>未介接：保留請求，不傳送，通知客戶</td><td>狀態：尚未送達</td></tr>
+        <tr><td>4b</td><td>平台</td><td>已介接：透過安全管道傳送請求（技術規格待定）</td><td>該行授權的需求項目、案件編號</td></tr>
+        <tr><td>5</td><td>銀行</td><td>接收請求，列入收件匣</td><td>僅狀態與案件編號，不含需求內容</td></tr>
+        <tr><td>6</td><td>銀行</td><td>依本行身分確認流程確認客戶</td><td>銀行自有流程的資料</td></tr>
+        <tr><td>7</td><td>銀行</td><td>身分未通過，或請求與客戶不符：停止，依本行流程處理</td><td>平台僅記錄「未通過」狀態</td></tr>
+        <tr><td>8</td><td>銀行</td><td>身分通過後，顯示需求內容並回覆</td><td>回覆內容</td></tr>
+        <tr><td>9</td><td>平台</td><td>將回覆或未通過狀態同步至客戶紀錄</td><td>回覆內容、狀態</td></tr>
         <tr><td>10</td><td>客戶</td><td>查看各行狀態與回覆</td><td>—</td></tr>
         <tr><td>11</td><td>客戶</td><td>撤回單一銀行的分享</td><td>撤回指令（指定銀行）</td></tr>
         <tr><td>12</td><td>平台</td><td>停止該行查閱，並通知該行</td><td>撤回通知</td></tr>
+        <tr><td>12b</td><td>銀行</td><td>收到撤回通知，停止查閱</td><td>—</td></tr>
       </tbody>
     </table>
   </div>
 
-  <h2>關鍵分支與處理</h2>
+  <h2>三、關鍵分支</h2>
   <div class="card">
     <table>
-      <thead><tr><th style="width:22%">情況</th><th>流程停在哪、由誰接手</th></tr></thead>
+      <thead><tr><th style="width:22%">情況</th><th style="width:14%">對應步驟</th><th>流程停在哪、由誰接手</th></tr></thead>
       <tbody>
-        <tr><td>銀行未介接（4a）</td><td>平台保留請求，不傳送；客戶看到「尚未送達」，由平台客服或銀行另行聯繫。</td></tr>
-        <tr><td>身分未通過（7）</td><td>銀行端停止，依本行流程處理；平台只記錄狀態，不顯示需求內容。</td></tr>
-        <tr><td>客戶撤回（11–12）</td><td>平台立即停止該行查閱並通知該行；已安排的服務需由客戶直接與該行聯繫。</td></tr>
-        <tr><td>請求內容與身分不符</td><td>因平台不以配對碼定位，不會發生碼比對失敗。若銀行發現資料不符，由銀行依本行流程退回並通知平台。</td></tr>
+        <tr><td>銀行未完成介接</td><td>4a</td><td>平台保留請求，不傳送。客戶看到「尚未送達」，後續由平台或銀行另行聯繫。</td></tr>
+        <tr><td>身分未通過</td><td>6 → 7</td><td>銀行停止處理，依本行流程辦理。平台只記錄「未通過」，客戶紀錄中不顯示需求內容。</td></tr>
+        <tr><td>請求與客戶不符</td><td>6 → 7</td><td>銀行停止處理，並依本行流程處理。平台不以配對碼定位，因此不會有碼比對失敗的情況。</td></tr>
+        <tr><td>客戶撤回</td><td>11 → 12 → 12b</td><td>平台立即停止該行查閱。已安排的服務需由客戶直接與該行聯繫。其他銀行不受影響。</td></tr>
       </tbody>
     </table>
   </div>
 
-  <h2>可行性與法規說明（待查核）</h2>
+  <h2>四、可行性與法規（待查核）</h2>
   <div class="card">
     <table>
-      <thead><tr><th style="width:20%">爭點</th><th style="width:14%">對應步驟</th><th>待查核的規範</th><th style="width:14%">狀態</th></tr></thead>
+      <thead><tr><th style="width:24%">爭點</th><th style="width:12%">對應步驟</th><th>待查核的規範</th><th style="width:12%">狀態</th></tr></thead>
       <tbody>
-        <tr><td>平台直接傳送需求給銀行的依據</td><td>3、4</td><td>個人資料保護法（特種個資、目的與同意格式）、委外與資料傳遞規定</td><td><span class="tag todo">待查核</span></td></tr>
-        <tr><td>銀行身分確認的方式與責任</td><td>6</td><td>金管會電子銀行業務相關安全控管規範</td><td><span class="tag todo">待查核</span></td></tr>
-        <tr><td>各行可接收與回覆的服務範圍</td><td>2、8</td><td>銀行公會業務合作自律規範（開放銀行）</td><td><span class="tag todo">待查核</span></td></tr>
-        <tr><td>技術傳輸標準</td><td>4</td><td>財金公司技術與資安標準</td><td><span class="tag todo">待查核</span></td></tr>
-        <tr><td>撤回後的資料保存期限</td><td>12</td><td>個資保存與刪除相關規定</td><td><span class="tag todo">待查核</span></td></tr>
-        <tr><td>實務成本與介接難度</td><td>4</td><td>Moneybook 經驗（業者觀點，非普遍結論）</td><td>僅供參考</td></tr>
+        <tr><td>平台直接傳送需求給銀行的依據</td><td>3、4b</td><td>個人資料保護法（特種個資、蒐集目的與同意格式）、委外與資料傳遞規定</td><td><span class="tag">待查核</span></td></tr>
+        <tr><td>銀行身分確認的方式與責任</td><td>6</td><td>金管會電子銀行業務安全控管相關規範</td><td><span class="tag">待查核</span></td></tr>
+        <tr><td>各行可接收與回覆的服務範圍</td><td>2、8</td><td>銀行公會業務合作自律規範（開放銀行）</td><td><span class="tag">待查核</span></td></tr>
+        <tr><td>安全管道的技術標準</td><td>4b</td><td>財金公司技術與資安標準</td><td><span class="tag">待查核</span></td></tr>
+        <tr><td>撤回與未通過後的資料保存期限</td><td>7、9、12</td><td>個資保存與刪除相關規定</td><td><span class="tag">待查核</span></td></tr>
+        <tr><td>介接成本與難度</td><td>4</td><td>Moneybook 經驗（業者觀點，非普遍結論）</td><td>僅供參考</td></tr>
       </tbody>
     </table>
-    <p class="muted" style="margin-top:12px">說明：以上為待查核清單，尚未對照台灣現行條文，不代表合規結論。第三階段「交易面資訊」的核備時間，需以金管會官方公告為準。</p>
+    <p class="muted" style="margin-top:12px">以上為待查核清單，尚未對照台灣現行條文，不代表合規結論。第三階段「交易面資訊」的核備狀態，需以金管會官方公告為準。</p>
   </div>
 
 </div>
+
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({ startOnLoad: true, securityLevel: 'loose', theme: 'base',
+    flowchart: { htmlLabels: true, curve: 'basis', nodeSpacing: 40, rankSpacing: 50 } });
+</script>
 </body>
 </html>
